@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Booking System</title>
+</head>
+<body>
+    <h1>Event Booking System</h1>
+    
+    <h2>Create Event</h2>
+    <form id="createEventForm">
+        <input type="text" id="eventName" placeholder="Event Name" required>
+        <input type="date" id="eventDate" required>
+        <input type="number" id="totalTickets" placeholder="Total Tickets" required>
+        <button type="submit">Create Event</button>
+    </form>
+    
+    <h2>Book Tickets</h2>
+    <form id="bookTicketsForm">
+        <input type="text" id="userId" placeholder="User ID" required>
+        <input type="text" id="eventId" placeholder="Event ID" required>
+        <input type="number" id="quantity" placeholder="Quantity" required>
+        <button type="submit">Book Tickets</button>
+    </form>
+    
+    <script>
+        document.getElementById('createEventForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('eventName').value;
+            const date = document.getElementById('eventDate').value;
+            const totalTickets = document.getElementById('totalTickets').value;
+
+            const response = await fetch('/events', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, date, totalTickets })
+            });
+
+            const data = await response.json();
+            alert(`Event Created: ${JSON.stringify(data)}`);
+        });
+
+        document.getElementById('bookTicketsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userId = document.getElementById('userId').value;
+            const eventId = document.getElementById('eventId').value;
+            const quantity = document.getElementById('quantity').value;
+
+            const response = await fetch('/bookings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId, eventId, quantity })
+            });
+
+            const data = await response.json();
+            alert(`Booking Created: ${JSON.stringify(data)}`);
+        });
+    </script>
+</body>
+</html>
